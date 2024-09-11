@@ -22,7 +22,9 @@ int main(int UNUSED argc, char** argv)
   pid_t xterm, spike;
 
   static bool signal_exit = false;
-  auto handle_signal = [](int) { signal_exit = true; };
+  auto handle_signal = [](int) {
+	printf("handle_signal(xspike): signal_exit = true");
+	signal_exit = true; };
 
   if ((xterm = fork_xterm(&tty_fd)) < 0)
   {

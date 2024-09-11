@@ -97,6 +97,7 @@ std::map<std::string, uint64_t> load_elf(const char* fn, memif_t* memif, reg_t* 
       sym_t* sym = (sym_t*)(buf + bswap(sh[symtabidx].sh_offset));             \
       for (unsigned i = 0; i < bswap(sh[symtabidx].sh_size) / sizeof(sym_t);   \
            i++) {                                                              \
+        printf("sym_size: %d\n", (uint32_t)sym[i].st_size);                                                    \
         unsigned max_len =                                                     \
             bswap(sh[strtabidx].sh_size) - bswap(sym[i].st_name);              \
         assert(bswap(sym[i].st_name) < bswap(sh[strtabidx].sh_size));          \

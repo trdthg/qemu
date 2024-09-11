@@ -209,6 +209,7 @@ void syscall_t::handle_syscall(command_t cmd)
   if (cmd.payload() & 1) // test pass/fail
   {
     htif->exitcode = cmd.payload();
+  	printf("handle_syscall: exitcode = %d\n", htif->exitcode);
     if (htif->exit_code())
       std::cerr << "*** FAILED *** (tohost = " << htif->exit_code() << ")" << std::endl;
     return;
@@ -222,6 +223,7 @@ void syscall_t::handle_syscall(command_t cmd)
 reg_t syscall_t::sys_exit(reg_t code, reg_t a1, reg_t a2, reg_t a3, reg_t a4, reg_t a5, reg_t a6)
 {
   htif->exitcode = code << 1 | 1;
+  printf("sys_exit: exitcode = %d\n", htif->exitcode);
   return 0;
 }
 

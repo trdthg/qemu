@@ -40,6 +40,7 @@ static void handle_signal(int sig)
 {
   if (sig == SIGABRT || signal_exit) // someone set up us the bomb!
     exit(-1);
+  printf("handle_signal(htif): signal_exit = true");
   signal_exit = true;
   signal(sig, &handle_signal);
 }
@@ -257,8 +258,17 @@ int htif_t::run()
       idle();
   }
 
-  while (!signal_exit && exitcode == 0)
+  for (;;)
   {
+	printf("循环\n");
+	int res = !signal_exit && exitcode == 0;
+	if (!res) {
+		// exitcode = 1 && signal_exit = false
+		printf ("能看到吗\n");
+		printf ("!signal_exit = %b, exit_code = %d\n", !signal_exit, exitcode);
+		break;
+	}
+
     uint64_t tohost;
 
     try {
