@@ -319,10 +319,10 @@ static void *load_at(int fd, off_t offset, size_t size)
 #undef SZ
 #define elfhdr          elf64_hdr
 #define elf_phdr        elf64_phdr
-#define elf_note        elf64_note
 #define elf_shdr        elf64_shdr
 #define elf_sym         elf64_sym
 #define elf_rela        elf64_rela
+#define elf_note        elf64_note
 #define elf_word        uint64_t
 #define elf_sword       int64_t
 #define bswapSZs        bswap64s
@@ -494,11 +494,13 @@ ssize_t load_elf_ram_sym(const char *filename,
 
     lseek(fd, 0, SEEK_SET);
     if (e_ident[EI_CLASS] == ELFCLASS64) {
+		printf("load_elf64\n");
         ret = load_elf64(filename, fd, elf_note_fn,
                          translate_fn, translate_opaque, must_swab,
                          pentry, lowaddr, highaddr, pflags, elf_machine,
                          clear_lsb, data_swab, as, load_rom, sym_cb);
     } else {
+		printf("load_elf32\n");
         ret = load_elf32(filename, fd, elf_note_fn,
                          translate_fn, translate_opaque, must_swab,
                          pentry, lowaddr, highaddr, pflags, elf_machine,

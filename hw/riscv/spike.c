@@ -289,6 +289,7 @@ static void spike_board_init(MachineState *machine)
 
     /* Load firmware */
     if (firmware_name) {
+		printf("firmware_name = %s\n", firmware_name);
         firmware_end_addr = riscv_load_firmware(firmware_name,
                                                 memmap[SPIKE_DRAM].base,
                                                 htif_symbol_callback);
@@ -300,6 +301,7 @@ static void spike_board_init(MachineState *machine)
 
     /* Load kernel */
     if (machine->kernel_filename) {
+		printf("machine->kernel_filename = %s\n", machine->kernel_filename);
         kernel_start_addr = riscv_calc_kernel_start_addr(&s->soc[0],
                                                          firmware_end_addr);
 
@@ -355,6 +357,7 @@ static void spike_machine_class_init(ObjectClass *oc, void *data)
     /* platform instead of architectural choice */
     mc->cpu_cluster_has_numa_boundary = true;
     mc->default_ram_id = "riscv.spike.ram";
+	// ACT 测试参数
     object_class_property_add_str(oc, "signature", NULL, spike_set_signature);
     object_class_property_set_description(oc, "signature",
                                           "File to write ACT test signature");

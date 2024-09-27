@@ -137,6 +137,9 @@ static void glue(load_symbols, SZ)(struct elfhdr *ehdr, int fd, int must_swab,
 
     nsyms = symtab->sh_size / sizeof(struct elf_sym);
 
+    printf("nsyms = %d, symtab->sh_offset = %u\n", nsyms, (uint32_t)(symtab->sh_offset));
+    printf("symtab->sh_size = %u, sizeof(struct elf_sym) = %ld\n", (uint32_t)symtab->sh_size, sizeof(struct elf_sym));
+
     /* String table */
     if (symtab->sh_link >= ehdr->e_shnum) {
         return;
@@ -150,10 +153,18 @@ static void glue(load_symbols, SZ)(struct elfhdr *ehdr, int fd, int must_swab,
 
     i = 0;
     while (i < nsyms) {
+        // syms[i].st_size = 8;
         if (must_swab) {
             glue(bswap_sym, SZ)(&syms[i]);
         }
         if (sym_cb) {
+            #if 1 == 0
+            #if SZ == 32
+            printf("str + syms[i].st_name = %s, size = %u\n", str + syms[i].st_name, syms[i].st_size);
+            #else
+            printf("str + syms[i].st_name = %s, size = %lu\n", str + syms[i].st_name, syms[i].st_size);
+            #endif
+            #endif
             sym_cb(str + syms[i].st_name, syms[i].st_info,
                    syms[i].st_value, syms[i].st_size);
         }
